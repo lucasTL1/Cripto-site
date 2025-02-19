@@ -203,9 +203,9 @@ function App() {
   const fetchData = async () => {
     try {
       const [ledgerRes, blockStateRes, blockchainStateRes] = await Promise.all([
-        fetch('http://localhost:8000/ledger'),
-        fetch('http://localhost:8000/block'),
-        fetch('http://localhost:8000/blockchain')
+        fetch('http://blockchain-backend-production.up.railway.app/ledger'),
+        fetch('http://blockchain-backend-production.up.railway.app/block'),
+        fetch('http://blockchain-backend-production.up.railway.app/blockchain')
       ]);
   
       const [ledger, blockState, blockchainState] = await Promise.all([
@@ -226,7 +226,7 @@ function App() {
   const transferCrypto = async () => {
     try {
       const senderValue = sender.trim() === "" ? null : sender;
-      const response = await fetch('http://localhost:8000/transaction', {
+      const response = await fetch('http://blockchain-backend-production.up.railway.app/transaction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -294,7 +294,7 @@ function App() {
 
   const mineCrypto = async () => {
     try {
-      const response = await fetch('http://localhost:8000/mine', {
+      const response = await fetch('http://blockchain-backend-production.up.railway.app/mine', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(miner)
