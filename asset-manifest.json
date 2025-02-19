@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Cripto-site/static/css/main.030f1c1b.css",
-    "main.js": "/Cripto-site/static/js/main.37edd8d2.js",
+    "main.js": "/Cripto-site/static/js/main.77d8dfcc.js",
     "static/js/488.721109ee.chunk.js": "/Cripto-site/static/js/488.721109ee.chunk.js",
     "static/media/Capturar7.PNG": "/Cripto-site/static/media/Capturar7.e7a764bc09013f430f25.PNG",
     "static/media/Capturar6.PNG": "/Cripto-site/static/media/Capturar6.73b8dbb6d98776f62ed2.PNG",
@@ -26,11 +26,11 @@
     "static/media/Capturar.PNG": "/Cripto-site/static/media/Capturar.64327c6c6c0b0a90a843.PNG",
     "index.html": "/Cripto-site/index.html",
     "main.030f1c1b.css.map": "/Cripto-site/static/css/main.030f1c1b.css.map",
-    "main.37edd8d2.js.map": "/Cripto-site/static/js/main.37edd8d2.js.map",
+    "main.77d8dfcc.js.map": "/Cripto-site/static/js/main.77d8dfcc.js.map",
     "488.721109ee.chunk.js.map": "/Cripto-site/static/js/488.721109ee.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.030f1c1b.css",
-    "static/js/main.37edd8d2.js"
+    "static/js/main.77d8dfcc.js"
   ]
 }
