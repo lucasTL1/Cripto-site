@@ -255,7 +255,7 @@ function App() {
 
   const apagarTransacao = async (transactionId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/delete_transaction`, {
+      const response = await fetch(`http://blockchain-backend-production.up.railway.app/delete_transaction`, {
         method: 'DELETE',
       });
   
@@ -274,7 +274,7 @@ function App() {
 
   const apagarBloco = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/clear_block', {
+      const response = await fetch('http://blockchain-backend-production.up.railway.app/clear_block', {
         method: 'DELETE',
       });
   
