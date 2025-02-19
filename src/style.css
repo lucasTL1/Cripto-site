@@ -1,13 +1,20 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #1e0131, #001131);
     color: #fff;
     line-height: 1.6;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+}
+
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 nav {
     background: rgba(0, 0, 0, 0.8);
@@ -17,6 +24,7 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
+    min-height: auto;
 }
 nav a {
     color: #fff;
@@ -24,6 +32,7 @@ nav a {
     margin: 0 1.5rem;
     font-weight: bold;
     transition: color 0.3s ease;
+    padding: 1px;
 }
 nav a:hover {
     color: #ffdd57;
@@ -32,11 +41,14 @@ section {
     padding: 4rem 2rem;
     text-align: center;
 }
+
+  
+
 .wiki {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     margin: 2rem auto;
-    max-width: 1600px; /* Aumentado para aproveitar mais espaço */
+    max-width: 1200px; /* Aumentado para aproveitar mais espaço */
     padding: 3rem; /* Aumentado para mais espaçamento interno */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: left;
@@ -49,10 +61,89 @@ section {
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+.home-container {
+    display: flex; 
+    justify-content: space-between; 
+    gap: 20px; 
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+.input-column {
+    flex: 1; 
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ledger-column {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.lista {
+    font-size: 18px;
+}
+
+  
+.code-box {
+    background-color: #1e1e1eb0;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 300px;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1.5px solid #d07fff;
+    text-align: left;
+    
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #d07fff #00000000; /* Firefox */
+
+    flex: 1;
+  }
+  
+  .code-box::-webkit-scrollbar {
+    width: 8px; 
+  }
+  
+  .code-box::-webkit-scrollbar-track {
+    background-color: #333; 
+    border-radius: 10px;
+  }
+  
+  .code-box::-webkit-scrollbar-thumb {
+    background-color: #444; 
+    border-radius: 10px;
+  }
+  
+  .code-box::-webkit-scrollbar-thumb:hover {
+    background-color: #666; 
+  }
+  
+
 h1 {
+    font-family: "Noto Sans Mono", serif;
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    font-weight: 800;
 }
+
+
+
+h2 {
+    font-family: "Poppins", serif;
+  }
+
 p {
     font-size: 1.2rem;
     margin-bottom: 1rem;
@@ -62,17 +153,20 @@ input {
     font-size: 1rem;
     border: none;
     border-radius: 5px;
-    margin-right: 1rem;
+    font-family: "Poppins", serif;
+    /* margin-right: 1rem; */
 }
 button {
     padding: 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 1.12rem;
     color: #fff;
     background-color: #6a11cb;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
 }
 button:hover {
     background-color: #2575fc;
@@ -82,11 +176,12 @@ button:hover {
     font-size: 1rem;
     word-break: break-word;
 }
-footer {
+/* footer {
     background: rgba(0, 0, 0, 0.8);
     padding: 1rem 0;
     text-align: center;
     margin-top: auto;
     color: #ccc;
     font-size: 0.9rem;
-}
+} */
+
