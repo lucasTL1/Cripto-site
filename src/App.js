@@ -20,6 +20,7 @@ import capturarImg17 from './assets/Capturar17.PNG';
 import capturarImg18 from './assets/Capturar18.PNG';
 import capturarImg19 from './assets/Capturar19.PNG';
 import capturarImg20 from './assets/Capturar20.PNG';
+import diagrama from './assets/diagrama.PNG';
 
 const images = require.context('./assets', false, /\.(png|jpe?g|svg)$/);
 const imageList = images.keys().map(image => images(image));
@@ -33,8 +34,48 @@ const Navigation = ({ setCurrentSection }) => (
 
 const WikiSection = () => (
   <section className="wiki">
-    <h1>Bem-vindo à Wiki</h1>
-    <p>Essa é a seção da Wiki, onde você pode encontrar informações úteis.</p>
+    <h1>Wiki - Blockchain em Rust </h1>
+    <p>Essa é a seção da Wiki, onde você pode encontrar informações úteis a respeito do nosso projeto da disciplina Linguagens de Programação da Universidade de Brasília, semestre 2024/2.</p>
+    <p style={{color: "#1ffff0"}}><b>Nicolas Meloni</b> - 222001369<br />
+    <b>Lucas Teles Leiro</b> - 211066131<br />
+    <b>Mateus Elias de Macedo</b> - 222011561</p>
+
+    <article>
+      <h2>Sobre o nosso projeto...</h2>
+      <p>
+        Para o projeto dessa disciplina, decidimos criar um protótipo de blockchain, em que transações são feitas e armazenadas em blocos, que, ao serem minerados, são validados e adicionados à blockchain. A blockchain criada nesse projeto foi simples, enfocando apenas os aspectos essenciais da estrutura, deixando de lado questões como smartcontracts e afins, que dão vida a verdadeiros ativos digitais.
+      </p>
+      <h2>Por que Rust + Blockchain?</h2>
+      <p>
+        Rust, como será visto mais a frente, é uma linguagem com bastante foco em segurança e desempenho, critérios essenciais em sistemas com qualquer relevância financeira, ou em qualquer sistema em que o registro correto dos eventos seja uma das principais características.
+      </p>
+      <p>
+        Como maior prova disso, temos redes como Polkadot, Casper Network, Hyperledger e, principalmente, Solana, que possui maior parte dos seus sistemas e programas feitos em Rust. Solana se tornou um dos ecossistemas mais promissores para aplicações descentralizadas (dApps), incluindo finanças descentralizadas (DeFi), marketplaces de NFTs, jogos blockchain e projetos de infraestrutura Web3. Um dos fenômenos recentes dentro da rede Solana é a ascensão da moeda TRUMP, um memecoin inspirado no presidente dos Estados Unidos, Donald Trump. Solana se destaca como um ambiente propício para negociações rápidas e liquidez em ativos altamente voláteis e, por isso, tem se tornado a pricipal blockchain para negociação de memecoins nos últimos anos.
+      </p>
+      <h2>Estrutura da nossa Blockchain</h2>
+      <p>
+        Priorizamos uma blockchain simples, mas que aborde a maioria das funcionalidades básicas. Temos uma blockchain principal que irá receber blocos, os quais precisam ser validados antes que possam entrar na cadeia. Essas validações garantem que o bloco não é adulterado e que seguem a cadeia de hashes dos blocos anteriores. Em uma blockchain robusta, essa validação também incluiria que cada nó da rede reconhecesse o bloco como legítimo antes de ser integrado, e uma série de outras verificações.
+      </p>
+      <p>
+        Cada bloco nosso é composto por pelo menos 3 transações. Nenhuma será verificada até que o bloco tente ser integrado à blockchain, sendo esse o momento em que problemas serão encontrados, podendo fazer com que um bloco seja aceito ou rejeitado.
+      </p>
+      <p>
+        Adicionamos também o conceito de minerador, em que o usuário responsável por conseguir encontrar uma nonce que satisfaça a dificuldade (normalmente isso requer muito poder computacional) e valide o bloco, receba uma recompensa. Essa recompensa entraria no bloco minerado como a primeira transação, a qual é chamada de coinbase. No nosso projeto, no entanto, decidimos que a primeira transação é aquela em que "dinheiro" pode ser dado a qualquer usuário desde que o remetente seja null, para que possamos criar saldos e gastá-los na demonstração. Com isso, a recompensa do minerador entraria diretamente no ledger (registro de saldos da blockchain), sem fazer parte do bloco como coinbase.
+      </p>
+      <p>
+        Vale ressaltar que ainda não podemos chamar esse "dinheiro" do nosso sistema de criptomoeda, pois isso envolveria a criação de smartcontracts, um tema mais específico dentro da área blockchain do qual não tratamos nesse projeto.
+      </p>
+
+      <div style={{ textAlign: 'center' }}>
+      <img 
+        src={diagrama} 
+        alt="Diagrama simplificado da nossa blockchain" 
+        style={{ maxWidth: '500px', height: 'auto', borderRadius: '10px' }} 
+      />
+      </div>
+
+
+    </article>
 
     {/* Exibindo todas as imagens carregadas */}
     <div className="image-gallery">
@@ -50,6 +91,8 @@ const WikiSection = () => (
   </section>
 );
 
+
+
 const HomeSection = ({
   balance,
   setBalance,
@@ -61,56 +104,81 @@ const HomeSection = ({
   setReceiver,
   amount,
   setAmount,
+  miner,
+  setMiner,
   transferCrypto,
   mineCrypto,
+  apagarTransacao,
+  apagarBloco,
   ledger,
   blockState,
   blockchainState
 }) => (
   <section className="home">
-    <h1>Painel da Criptomoeda</h1>
-    <p>Seu saldo é: {balance !== null ? `${balance} tokens` : 'Carregando...'}</p>
-    <h2>Transferir Criptomoeda</h2>
-    <input
-      type="text"
-      placeholder="Remetente"
-      value={sender}
-      onChange={(e) => setSender(e.target.value)}
-    />
-    <input
-      type="text"
-      placeholder="Destinatário"
-      value={receiver}
-      onChange={(e) => setReceiver(e.target.value)}
-    />
-    <input
-      type="number"
-      placeholder="Quantia"
-      value={amount}
-      onChange={(e) => setAmount(e.target.value)}
-    />
-    <button onClick={transferCrypto} disabled={!sender || !receiver || amount <= 0}>
-      Transferir
-    </button>
-    <h2>Minerar Criptomoeda</h2>
-    <button onClick={mineCrypto}>Minerar</button>
-    <h2>Histórico de Transações</h2>
-    <ul>
-      {transactions.map((tx) => (
-        <li key={tx.id}>
-          {tx.amount} tokens de {tx.sender} para {tx.receiver}, em {tx.date}.
-        </li>
-      ))}
-    </ul>
-    <h2>Dados do Ledger</h2>
-    <div className="ledger">
-      <h3>Ledger</h3>
-      <pre>{JSON.stringify(ledger, null, 2)}</pre>
-      <h3>Block State</h3>
+    <h1>BLOCKCHAIN SIMULATOR</h1>
+    <div className="home-container">
+
+      <div className="input-column">
+        <h2>Transferir</h2>
+        <input
+          type="text"
+          placeholder="Remetente"
+          value={sender}
+          onChange={(e) => setSender(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Destinatário"
+          value={receiver}
+          onChange={(e) => setReceiver(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Quantia"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        
+        <button onClick={transferCrypto} disabled={!receiver || amount <= 0}>TRANSFERIR</button>
+        <h2>Minerar Bloco</h2>
+        <input
+          type="text"
+          placeholder="Minerador"
+          value={miner}
+          onChange={(e) => setMiner(e.target.value)}
+        />
+        <button onClick={mineCrypto}>MINERAR</button>
+
+      </div>
+
+      <div className="ledger-column">
+          
+        <h2>Ledger</h2>
+        <div className="code-box">
+          <pre>{JSON.stringify(ledger, null, 2)}</pre>
+        </div>
+
+        <button onClick={apagarTransacao}>APAGAR TRANSAÇÃO</button>
+
+        <button onClick={apagarBloco}>APAGAR BLOCO</button>
+      </div>
+    </div>
+    
+    
+   
+    <h2>Bloco Atual</h2>
+    <div className="code-box">
       <pre>{JSON.stringify(blockState, null, 2)}</pre>
-      <h3>Blockchain State</h3>
+    </div>
+      
+  
+
+    <h2>Blockchain</h2>
+    <div className="code-box">
       <pre>{JSON.stringify(blockchainState, null, 2)}</pre>
     </div>
+
+
   </section>
 );
 
@@ -121,48 +189,53 @@ function App() {
   const [sender, setSender] = useState('');
   const [receiver, setReceiver] = useState('');
   const [amount, setAmount] = useState('');
+  const [miner, setMiner] = useState('');
   const [ledger, setLedger] = useState(null);
   const [blockState, setBlockState] = useState(null);
   const [blockchainState, setBlockchainState] = useState(null);
 
   useEffect(() => {
     if (currentSection === 'home') {
-      fetch('http://localhost:8000/user/123/balance')
-        .then((response) => response.json())
-        .then((data) => setBalance(data.balance))
-        .catch((error) => console.error('Erro ao obter saldo:', error));
-
-      fetch('http://localhost:8000/user/123/transactions')
-        .then((response) => response.json())
-        .then((data) => setTransactions(data))
-        .catch((error) => console.error('Erro ao obter transações:', error));
-
-      fetch('http://localhost:8000/ledger')
-        .then((response) => response.json())
-        .then((data) => setLedger(data))
-        .catch((error) => console.error('Erro ao obter dados do ledger:', error));
-
-      fetch('http://localhost:8000/block_state')
-        .then((response) => response.json())
-        .then((data) => setBlockState(data))
-        .catch((error) => console.error('Erro ao obter block state:', error));
-
-      fetch('http://localhost:8000/blockchain_state')
-        .then((response) => response.json())
-        .then((data) => setBlockchainState(data))
-        .catch((error) => console.error('Erro ao obter blockchain state:', error));
+      fetchData();
     }
   }, [currentSection]);
+///////////FETCH PARA ATUALIZAR DADOS NAS CAIXAS DE TEXTO LEDGER, BSTATE E BCSTATE////////////////////
+  const fetchData = async () => {
+    try {
+      const [ledgerRes, blockStateRes, blockchainStateRes] = await Promise.all([
+        fetch('http://localhost:8000/ledger'),
+        fetch('http://localhost:8000/block'),
+        fetch('http://localhost:8000/blockchain')
+      ]);
+  
+      const [ledger, blockState, blockchainState] = await Promise.all([
+        ledgerRes.json(),
+        blockStateRes.json(),
+        blockchainStateRes.json()
+      ]);
+  
+      setLedger(ledger);
+      setBlockState(blockState);
+      setBlockchainState(blockchainState);
+    } catch (error) {
+      console.error('Erro ao buscar dados do servidor:', error);
+    }
+  };
+//////////////////////////////////////  
 
   const transferCrypto = async () => {
     try {
-      const response = await fetch('http://localhost:8000/transactions', {
+      const senderValue = sender.trim() === "" ? null : sender;
+      const response = await fetch('http://localhost:8000/transaction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sender, receiver, amount }),
+        body: JSON.stringify({ 
+          from: senderValue, 
+          to: receiver, 
+          amount: Number(amount) 
+        }),
       });
       if (response.ok) {
-        alert('Transação enviada com sucesso!');
         setSender('');
         setReceiver('');
         setAmount('');
@@ -175,27 +248,76 @@ function App() {
       alert('Erro ao enviar transação.');
       console.error('Erro na requisição:', error);
     }
+
+    fetchData();
+
   };
+
+  const apagarTransacao = async (transactionId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/delete_transaction`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        alert('Erro ao apagar transação.');
+        throw new Error(`Erro ao apagar transação: ${response.statusText}`);
+      }
+  
+      console.log('Transação apagada com sucesso');
+      fetchData();
+    } catch (error) {
+      alert('Erro ao apagar transação.');
+      console.error('Erro ao apagar transação:', error);
+    }
+  };
+
+  const apagarBloco = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/clear_block', {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        alert('Erro ao apagar bloco.');
+        throw new Error(`Erro ao apagar bloco: ${response.statusText}`);
+      }
+      
+      console.log('Bloco apagado com sucesso');
+      fetchData();
+    } catch (error) {
+      alert('Erro ao apagar bloco:', error);
+      console.error('Erro ao apagar bloco:', error);
+    }
+  };
+  
 
   const mineCrypto = async () => {
     try {
       const response = await fetch('http://localhost:8000/mine', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(miner)
       });
       if (response.ok) {
         alert('Criptomoeda minerada com sucesso!');
+        setMiner('');
         setCurrentSection('home'); // Atualiza dados
+        fetchData();
       } else {
         alert('Erro ao minerar criptomoeda.');
         console.error('Erro ao minerar:', response.statusText);
       }
     } catch (error) {
-      alert('Erro ao minerar criptomoeda.');
+      alert('Erro ao minerar criptomoeda:', error);
       console.error('Erro na requisição:', error);
     }
+
+    
+
   };
 
-  return (
+  return (  
     <div>
       <Navigation setCurrentSection={setCurrentSection} />
       {currentSection === 'wiki' && <WikiSection />}
@@ -211,16 +333,69 @@ function App() {
           setReceiver={setReceiver}
           amount={amount}
           setAmount={setAmount}
+          miner={miner}
+          setMiner={setMiner}
           transferCrypto={transferCrypto}
           mineCrypto={mineCrypto}
+          apagarTransacao={apagarTransacao}
+          apagarBloco={apagarBloco}
           ledger={ledger}
           blockState={blockState}
           blockchainState={blockchainState}
         />
       )}
       {currentSection === 'wiki' && (
+        // <section className="wiki">
+
+        // </section>
+
+
         <section className="wiki">
         <div>
+          <article>
+          <h2>A História de Rust</h2>
+          <p>
+              Rust é uma linguagem de programação moderna que foi projetada para oferecer alto desempenho, segurança e controle de memória, características que tradicionalmente pertenciam a linguagens como C e C++. Sua história começa em 2006, quando Graydon Hoare, um engenheiro da Mozilla, iniciou o desenvolvimento de Rust como um projeto pessoal. O objetivo era criar uma linguagem que resolvesse problemas comuns de segurança de memória, como ponteiros inválidos e condições de corrida, enquanto mantinha a eficiência necessária para sistemas de alto desempenho.
+          </p>
+          <p>
+              Em 2009, o projeto ganhou suporte oficial da Mozilla, o que marcou um ponto de virada significativo para Rust. A empresa viu potencial na linguagem para ajudar a melhorar o desempenho e a segurança de seus produtos, incluindo o navegador Firefox. Com o apoio da Mozilla, Rust passou a ter uma equipe de desenvolvimento dedicada, o que permitiu que a linguagem evoluísse rapidamente.
+          </p>
+          <p>
+              O primeiro lançamento público de Rust ocorreu em 2010, como uma versão preliminar. Na época, a linguagem ainda estava em suas fases iniciais e apresentava uma sintaxe muito diferente da atual. A evolução contínua resultou em melhorias significativas na linguagem, incluindo uma nova abordagem para controle de memória baseada no conceito de "ownership" (posse), que se tornou um dos pilares fundamentais de Rust.
+          </p>
+          <p>
+              Em 2015, Rust alcançou a maturidade com o lançamento de sua versão 1.0. Este marco foi crucial, pois estabeleceu uma base estável para desenvolvedores e garantiu que novos projetos não seriam interrompidos por mudanças incompatíveis na linguagem. A partir deste ponto, Rust começou a ganhar ampla adoção, especialmente entre empresas e desenvolvedores que buscavam uma alternativa segura e eficiente às linguagens tradicionais de sistemas.
+          </p>
+          <p>
+              Desde então, Rust tem sido amplamente utilizado em diversas áreas, incluindo sistemas operacionais, navegadores, bancos de dados e até mesmo blockchain. A linguagem foi escolhida para reescrever partes críticas do navegador Firefox, como o mecanismo de renderização Servo, devido à sua capacidade de prevenir erros de memória comuns.
+          </p>
+          <p>
+              Rust tem uma abordagem centrada no desenvolvedor, busca criar ferramentas e documentação acessíveis para todos, tornando a linguagem não apenas poderosa, mas também agradável de usar.
+          </p>
+          <p>
+              Hoje, Rust frequentemente recebe elogios por sua combinação única de segurança, desempenho e ergonomia. Ela continua a evoluir, impulsionada por sua comunidade e pelo crescente interesse em construir software confiável e de alto desempenho.
+          </p>  
+          </article>
+          <article>
+            <h2>
+            Premissas, Usuário e Domínio de Aplicação da Linguagem Rust
+            </h2>
+            <p>
+                A linguagem Rust se destaca como uma escolha estratégica para projetos que demandam segurança, desempenho e eficiência. Suas principais premissas residem na segurança de memória e concorrência, dois pilares fundamentais para o desenvolvimento de sistemas robustos. Diferentemente de outras linguagens, Rust evita problemas comuns, como condições de corrida, vazamentos e acessos inválidos à memória, utilizando um sistema de ownership e borrowing que opera em tempo de compilação, eliminando a necessidade de garbage collector (GC). Assim, é possível criar aplicações de alto desempenho que competem diretamente com linguagens como C e C++, mas sem sacrificar a confiabilidade.
+            </p>
+            <p>
+                Outro ponto de destaque de Rust é sua capacidade de lidar com tarefas de concorrência de maneira segura e eficiente, possibilitando o uso de múltiplas threads sem o risco de introduzir erros sutis e críticos. Além disso, seu ecossistema crescente, com ferramentas como o cargo (gerenciador de pacotes) e uma ampla gama de crates (bibliotecas), amplia sua versatilidade para diversas áreas, como desenvolvimento web, blockchain, sistemas embarcados, jogos e ferramentas de linha de comando.
+            </p>
+            <p>
+                Os usuários de Rust são amplamente variados, abrangendo desde desenvolvedores profissionais até entusiastas e estudantes. No caso de sistemas embarcados, Rust atende a engenheiros que precisam de controle rigoroso sobre a memória e processamento, especialmente em dispositivos com recursos limitados. Empresas de tecnologia, por sua vez, encontram em Rust uma linguagem confiável para aplicações críticas, como sistemas bancários ou redes descentralizadas. Entusiastas e desenvolvedores de blockchain veem em Rust uma ferramenta essencial para criar contratos inteligentes e redes seguras. Estudantes e pesquisadores, atraídos pelo modelo inovador de gerenciamento de memória e sistemas de tipos avançados, também se beneficiam do aprendizado e aplicação prática da linguagem.
+            </p>
+            <p>
+                O domínio de aplicação de Rust é vasto e adaptável a diversos cenários. Na área de desenvolvimento web, frameworks como Rocket e Actix tornam a criação de APIs e servidores HTTP de alto desempenho acessível e eficiente. No contexto de blockchain, Rust é ideal para implementar criptomoedas, contratos inteligentes e sistemas descentralizados, graças à sua segurança intrínseca. No campo de sistemas embarcados, Rust permite o controle de dispositivos de baixo nível, como microcontroladores, maximizando o uso eficiente de recursos limitados. A linguagem também tem ganhado espaço no desenvolvimento de jogos, oferecendo ferramentas como o framework Bevy, que combina desempenho e facilidade de uso para criação de jogos e motores gráficos. Por fim, Rust se sobressai no desenvolvimento de ferramentas de linha de comando e software de alta performance, como algoritmos matemáticos e análise de dados, devido à sua capacidade de lidar com tarefas intensivas de forma otimizada.
+            </p>
+            <p>
+                Em resumo, Rust é uma linguagem que atende a múltiplas demandas modernas, combinando segurança, desempenho e flexibilidade. Sua aplicação pode ser moldada para resolver problemas complexos em várias áreas, enquanto seu design inovador continua atraindo uma comunidade crescente de usuários em busca de soluções mais seguras e eficientes.
+            </p>
+          </article>
           <article>
           <h2>Construtores </h2>
             <p>    Quando se trata de tipos primitivos, um aspecto interessante do Rust comparado a C é que seus tipos numéricos são divididos na quantidade de bits de memória que ocupam e, consecutivamente, os intervalos de memória a quais podem ser endereçados. Por exemplo, i32 é um inteiro de 32 bits e, portanto, só pode ser armazenado em um endereço múltiplo de 32, enquanto u16 é um inteiro sem sinal de 16 bits. No geral, inteiros com ou sem sinal podem ser de 8, 16, 32, 64 ou 128 bits, e floats podem ser de 32 ou 64, tal funcionalidade pode ser feita com bibliotecas em C, mas em Rust tal detalhamento é padrão.    </p>
@@ -230,58 +405,62 @@ function App() {
             <p>Exemplo: “break” possui tipo “Never”, logo, apesar de “numerov” esperar um valor do tipo “u32”, ele aceita um match com retorno “break” por saber que a computação não será terminada nesse caso.  </p>
            
             <img src={capturarImg} alt="Descrição da imagem da seção 1" style={{MaxWidth: '100%', borderRadius: '10px'}}/>
-
+            
             <p>
               Como elementos base da construção de sentenças em Rust, a maior parte deles é equivalente aos de C, mas possui algumas peculiaridades em sua estruturas e palavras chave, como:
             </p>
-            <p>
-              “fn”: Palavra-chave que inicia a declaração de uma função.
-            </p>
-            <p>
-              “let N”. “let” é uma palavra-chave. Nessa estrutura inicia declaração de uma variável “N”,
-            </p>
-            <p>
-              “N : T”: Construtor opcional para explicitar que a variável declarada “N” é do tipo “T” (pois o compilador de Rust muitas vezes é capaz de deduzir o tipo implícito).
-            </p>
-            <p>
-              “N as T”: “as” é uma palavra-chave. Pode converter um valor “N” para o tipo “T“ou pode também renomear elemento “N” de um import para “T”.
-            </p>
-            <p>
-              “impl T”: “impl” é uma palavra-chave. Nesse uso, declara implementação do tipo “T”, pode ser de uma “Trait”, assumindo forma de “impl R for T”, que implementa a trait “R” para o tipo “t”.
-            </p>
-            <p>
-              “mod”: Palavra-chave que declara um módulo, separando o código em unidades lógicas que agrupam de funções, traits e structs. Por padrão, conteúdo de um módulo é privado, servindo como forma de controlar o escopo em Rust.
-            </p>
-            <p>
-              “pub”: Palavra-chave que declara um conteúdo de um módulo como público ao invés de privado.
-            </p>
-            <p>
-              “self”: Palavra-chave que se usa para referenciar o módulo atual.
-            </p>
-            <p>
-              “super”: Palavra-chave que se usa para referenciar o módulo acima do atual.
-            </p>
-            <p>
-              “mut”: Palavra-chave usada para declarar uma referência como mutável.
-            </p>
-            <p>
-              “move”: Palavra-chave usada para converter variáveis declaradas por referências, mutáveis ou não, em variáveis capturadas por valor, passando a posse do valor à nova variável.
-            </p>
-            <p>
-              “loop”: Palavra-chave que indica loop infinito.
-            </p>
-            <p>
-              “in”: Palavra-chave que em loop for permite iterar por elementos da estrutura a seguinte desde que ela implemente a “trait” “IntoIterator”.
-            </p>
-            <p>
-              “where”: Palavra-chave usada para impor restrições baseadas em “traits” necessárias para um item ser utilizado.
-            </p>
-            <p>
-              “trait”: Palavra chave indicando uma “trait”, que funciona como interface comum.
-            </p>
-            <p>
-              “unsafe”: Palavra-chave usada em blocos e métodos que utilizam funcionalidades cuja segurança não pode ser garantida pelo compilador. Desabilita certos cheques de integridade em troca de maiores funcionalidades, como desreferenciar um “raw pointer”.
-            </p>
+            
+            <ul class="lista">
+            
+              <li>
+                <b>“fn”:</b> Palavra-chave que inicia a declaração de uma função.
+              </li>
+              <li>
+              <b>“let N”:</b> “let” é uma palavra-chave. Nessa estrutura inicia declaração de uma variável “N”,
+              </li>
+              <li>
+              <b>“N : T”:</b> Construtor opcional para explicitar que a variável declarada “N” é do tipo “T” (pois o compilador de Rust muitas vezes é capaz de deduzir o tipo implícito).
+              </li>
+              <li>
+              <b>“N as T”:</b> “as” é uma palavra-chave. Pode converter um valor “N” para o tipo “T“ou pode também renomear elemento “N” de um import para “T”.
+              </li>
+              <li>
+              <b>“impl T”:</b> “impl” é uma palavra-chave. Nesse uso, declara implementação do tipo “T”, pode ser de uma “Trait”, assumindo forma de “impl R for T”, que implementa a trait “R” para o tipo “t”.
+              </li>
+              <li>
+              <b>“mod”:</b> Palavra-chave que declara um módulo, separando o código em unidades lógicas que agrupam de funções, traits e structs. Por padrão, conteúdo de um módulo é privado, servindo como forma de controlar o escopo em Rust.
+              </li>
+              <li>
+              <b>“pub”:</b> Palavra-chave que declara um conteúdo de um módulo como público ao invés de privado.
+              </li>
+              <li>
+              <b>“self”:</b> Palavra-chave que se usa para referenciar o módulo atual.
+              </li>
+              <li>
+              <b>“super”:</b> Palavra-chave que se usa para referenciar o módulo acima do atual.
+              </li>
+              <li>
+              <b>“mut”:</b> Palavra-chave usada para declarar uma referência como mutável.
+              </li>
+              <li>
+              <b>“move”:</b> Palavra-chave usada para converter variáveis declaradas por referências, mutáveis ou não, em variáveis capturadas por valor, passando a posse do valor à nova variável.
+              </li>
+              <li>
+              <b>“loop”:</b> Palavra-chave que indica loop infinito.
+              </li>
+              <li>
+              <b>“in”:</b> Palavra-chave que em loop for permite iterar por elementos da estrutura a seguinte desde que ela implemente a “trait” “IntoIterator”.
+              </li>
+              <li>
+              <b>“where”:</b> Palavra-chave usada para impor restrições baseadas em “traits” necessárias para um item ser utilizado.
+              </li>
+              <li>
+              <b>“trait”:</b> Palavra chave indicando uma “trait”, que funciona como interface comum.
+              </li>
+              <li>
+              <b>“unsafe”:</b> Palavra-chave usada em blocos e métodos que utilizam funcionalidades cuja segurança não pode ser garantida pelo compilador. Desabilita certos cheques de integridade em troca de maiores funcionalidades, como desreferenciar um “raw pointer”.
+              </li>
+            </ul>
             <p>
               A respeito de outras estruturas além de tipos primitivos, Rust possui as seguintes estruturas notáveis diferentes daquelas em C:
             </p>
@@ -500,18 +679,16 @@ Rust (Dá erro na compilação):  </p>
 
             <p>O Rust não possui um documento oficinal que define a Gramática Formal da linguagem, mas possui algumas descrições informais, mas oficiais, dos elementos da gramática, apesar de ele estar incompleto pela sua própria admissão. Esse documento pode ser acessado pelo link:  </p>
             
-            <a href = "https://doc.rust-lang.org/reference/">https://doc.rust-lang.org/reference/</a>  
+            <a href = "https://doc.rust-lang.org/reference/"><i>https://doc.rust-lang.org/reference/</i></a>  
 
             <p>C define sua Gramática Formal, que é visível na definição da linguagem presente em: </p>
 
-            <a href="https://www.cimat.mx/ciencia_para_jovenes/bachillerato/libros/%5BKernighan-Ritchie%5DThe_C_Programming_Language.pdf">https://www.cimat.mx/ciencia_para_jovenes/bachillerato/libros/%5BKernighan-Ritchie%5DThe_C_Programming_Language.pdf </a>
+            <a href="https://www.cimat.mx/ciencia_para_jovenes/bachillerato/libros/%5BKernighan-Ritchie%5DThe_C_Programming_Language.pdf"><i>https://www.cimat.mx/ciencia_para_jovenes/bachillerato/libros/%5BKernighan-Ritchie%5DThe_C_Programming_Language.pdf</i> </a>
           </article>
         </div>
         </section>
         )}
-      <footer>
-        <p>© 2025 ProjetoLP-Criptomoeda. Todos os direitos reservados.</p>
-      </footer>
+      
     </div>
   );
 }
